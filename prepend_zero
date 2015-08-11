@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "Insert a zero in front of the filename"
+echo "--------------------------"
+echo "Sample of output:"
+rename -n "s/^(.+)$/0\$1/" * | head -n 3
+rename -n "s/^(.+)$/0\$1/" * | tail -n 3
+echo "--------------------------"
+read -p "Rename files? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+rename "s/^(.+)$/0\$1/" *
+echo "Done"
+fi
+

@@ -1,0 +1,33 @@
+#!/bin/bash
+echo "Create Directories and Previews"
+echo "--------------------------"
+echo -n "I will create the directories in "
+pwd 
+echo "--------------------------"
+read -p "Proceed? " -n 1 -r
+echo    
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    echo "Creating directories"
+    mkdir "hrf"
+    mkdir "lrp"
+    cp *.jpg lrp/.
+    mv *.jpg hrf/.
+    cd lrp
+    echo -n "Initial file size is "; du -h0s . | cut -f1; 
+    NUM_TO_CREATE=$(ls | wc -l | tr -d "\n")
+    NUM_COMPLETE=0;
+    echo "Creating $NUM_TO_CREATE previews";
+    for file in *.jpg; do convert -resize 20% -quality 90 "$file" "$file"; 
+    NUM_COMPLETE=$((NUM_COMPLETE + 1));
+    PERCENT_DONE=$(echo "scale = 4; $NUM_COMPLETE / $NUM_TO_CREATE * 100" | bc | sed "s/00$//" )
+    echo -ne "\r$PERCENT_DONE%"
+    done;
+    echo "";
+    echo -n "Preview file size is "; du -h0s . | cut -f1; 
+    cd ..
+    mv hrf "High-Resolution Files"
+    mv lrp "Low-Resolution Previews"
+    echo "Done"
+fi
+

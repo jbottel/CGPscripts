@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "Reducing file names to first three digits"
+echo "--------------------------"
+echo "Sample of output:"
+rename -n "s/(\d{2}).+\.jpg/\$1.jpg/" * | head -n 3
+rename -n "s/(\d{2}).+\.jpg/\$1.jpg/" * | tail -n 3
+echo "--------------------------"
+read -p "Rename files? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+rename "s/(\d{2}).+\.jpg/\$1.jpg/" * 
+echo "Done"
+fi
+
